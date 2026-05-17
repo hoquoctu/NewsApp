@@ -25,6 +25,11 @@ class ArticleDetailViewController: UIViewController {
         configureWebView()
     }
     
+    // LUỒNG XUẤT TEXT & HÌNH ẢNH BÀI BÁO (WKWebView):
+    // Cơ chế: Bài báo của bạn (article.content) chứa mã HTML thô. Nếu đưa vào UITextView, nó sẽ in ra thẻ <p>, <img> rất xấu và lỗi.
+    // Giải pháp: Sử dụng WKWebView (trình duyệt web nhúng). Đoạn mã dưới đây là bộ khung HTML và CSS.
+    // Trong bộ khung này, đoạn CSS (style) sẽ can thiệp để ép chữ to ra dễ đọc, và ép hình ảnh/video
+    // luôn tự động co giãn vừa vặn 100% màn hình điện thoại (max-width: 100% !important).
     private func configureWebView() {
         // Construct the full HTML to wrap the article content
         // This ensures the custom tags like <figure> and <p> display beautifully
@@ -94,6 +99,7 @@ class ArticleDetailViewController: UIViewController {
                     font-size: 17px;
                     line-height: 1.6;
                 }
+                /* CSS ÉP DÀN TRANG HÌNH ẢNH */
                 .content img, .content figure {
                     max-width: 100% !important;
                     height: auto !important;
@@ -122,31 +128,32 @@ class ArticleDetailViewController: UIViewController {
             </div>
             <div class="content">
                 <p><strong>\(article.description)</strong></p>
-                \(article.content)
+                <!-- Tiêm đoạn HTML đã được sửa lỗi lười tải vào đây -->
+                \(processContentHTML(article.content))
             </div>
-            
-            <script>
-                // 1. Convert VNExpress <meta> tags in <figure> to real images
-                document.querySelectorAll('figure').forEach(fig => {
-                    if (!fig.querySelector('img')) {
-                        let meta = fig.querySelector('meta[content*=".jpg"], meta[content*=".png"], meta[content*=".jpeg"], meta[itemprop="url"]');
-                        if (meta && meta.content) {
-                            let img = document.createElement('img');
-                            img.src = meta.content;
-                            fig.appendChild(img);
-                        }
-                    }
-                });
-                
-                // 2. Bypass lazy loading for all elements (img, iframe, video) with data-src
-                document.querySelectorAll('[data-src]').forEach(el => {
-                    el.src = el.getAttribute('data-src');
-                });
-            </script>
         </body>
         </html>
         """
         
         detailScreen.webView.loadHTMLString(htmlString, baseURL: nil)
+    }
+    
+    // CƠ CHẾ FIX LỖI KHÔNG HIỆN ẢNH VÀ VIDEO CỦA VNEXPRESS:
+    // Vì VNExpress dùng kỹ thuật Lazy-Load (Lười tải) để web load nhanh hơn. 
+    // Tức là họ giấu link ảnh/video thật đi (dùng chữ data-src=, hoặc thẻ <meta>). 
+    // Hàm này sẽ dùng Swift dùng để dò và "gỡ phong ấn" các đoạn mã đó.
+    private func processContentHTML(_ content: String) -> String {
+        var processed = content
+        
+        // 1. Ép tất cả các thẻ lười tải (lazy-load) như video, iframe, img về lại thuộc tính thật (src=) để trình duyệt phải vẽ ra.
+        processed = processed.replacingOccurrences(of: "data-src=", with: "src=")
+        processed = processed.replacingOccurrences(of: "data-video-src=", with: "src=")
+        processed = processed.replacingOccurrences(of: "data-original=", with: "src=")
+        
+        // 2. Với các ảnh được VNExpress giấu tinh vi hơn bên trong thẻ <meta>, ta thay thẳng chữ <meta thành <img
+        processed = processed.replacingOccurrences(of: "<meta content=\"http", with: "<img src=\"http")
+        processed = processed.replacingOccurrences(of: "<meta itemprop=\"url\" content=\"http", with: "<img src=\"http")
+        
+        return processed
     }
 }

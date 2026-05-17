@@ -46,7 +46,11 @@ class HomeViewController: UIViewController {
         homeScreen.categoryCollectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
     }
     
-    // MARK: - Networking
+    // MARK: - Networking / LUỒNG LẤY DỮ LIỆU CHÍNH
+    // CƠ CHẾ: Khi màn hình vừa bật lên (viewDidLoad), hàm này sẽ được gọi.
+    // 1. Gửi lệnh lên Firebase để lấy danh sách Thể loại (Categories).
+    // 2. Tự động chèn thêm chữ "Tất cả" vào đầu danh sách (mặc định id là "all").
+    // 3. Sau khi có danh mục, nó mới gọi tiếp lệnh tải Bài báo (fetchArticles) dựa trên Category đầu tiên.
     private func fetchData() {
         homeScreen.showLoading()
         
