@@ -106,10 +106,10 @@ class ArticleCell: UITableViewCell {
     // MARK: - Configuration
     func configure(with article: Article) {
         titleLabel.text = article.title
-        categoryLabel.text = "  \(article.categoryName.uppercased())  "
-        timeLabel.text = "⏱ \(article.readingTime) min read"
+        categoryLabel.text = "  \(article.categoryName?.uppercased() ?? "TIN TỨC")  "
+        timeLabel.text = "⏱ \(article.readingTime ?? 0) min read"
         
         // Load image using native extension
-        articleImageView.loadImage(from: article.thumbnailUrl)
+        articleImageView.loadImage(from: article.thumbnailUrl ?? "")
     }
 }

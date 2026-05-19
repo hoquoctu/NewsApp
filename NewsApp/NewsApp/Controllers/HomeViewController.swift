@@ -6,6 +6,7 @@ class HomeViewController: UIViewController {
     // MARK: - View
     private let homeScreen = HomeScreen()
     private let apiService = FirebaseAPIService.shared
+    private let featuredArticleView = FeaturedArticleView()
     
     // MARK: - Data
     private var articles: [Article] = []
@@ -18,6 +19,14 @@ class HomeViewController: UIViewController {
     private var isFinished = false
     private let fetchLimit = 20
     
+    // MARK: - Search State
+    private let searchController = UISearchController(searchResultsController: nil)
+    private var searchResults: [Article] = []
+    private var searchTimer: Timer?
+    private var isSearching: Bool {
+        return searchController.isActive && !(searchController.searchBar.text?.isEmpty ?? true)
+    }
+    
     // MARK: - Lifecycle
     override func loadView() {
         view = homeScreen
@@ -27,9 +36,18 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         title = "NewsFlow"
         
+        setupSearchController()
         setupTableView()
         setupCollectionView()
         fetchData()
+    }
+    
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Tìm theo tác giả, nội dung..."
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
     
     // MARK: - Setup
@@ -38,6 +56,8 @@ class HomeViewController: UIViewController {
         homeScreen.tableView.dataSource = self
         homeScreen.tableView.register(ArticleCell.self, forCellReuseIdentifier: ArticleCell.identifier)
         homeScreen.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "BasicCell")
+        
+        featuredArticleView.delegate = self
     }
     
     private func setupCollectionView() {
@@ -73,7 +93,7 @@ class HomeViewController: UIViewController {
             
             // Lần đầu fetch Articles: reset các biến phân trang
             self?.resetPagination()
-            self?.fetchArticles()
+            self?.fetchContentForCurrentCategory()
         }
     }
     
@@ -84,7 +104,38 @@ class HomeViewController: UIViewController {
         isLoadingMore = false
         DispatchQueue.main.async {
             self.homeScreen.tableView.reloadData()
+            self.homeScreen.tableView.tableHeaderView = nil // Ẩn featured view đi khi đổi tab
         }
+    }
+    
+    private func fetchContentForCurrentCategory() {
+        var catId: String? = nil
+        if !categories.isEmpty && selectedCategoryIndex < categories.count {
+            let selectedCat = categories[selectedCategoryIndex]
+            catId = selectedCat.id
+        }
+        
+        // 1. Tải Bài Báo Nổi Bật (Trending by viewCount)
+        apiService.fetchFeaturedArticle(categoryId: catId) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let article):
+                    if let article = article {
+                        self?.featuredArticleView.configure(with: article)
+                        self?.featuredArticleView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 280)
+                        self?.homeScreen.tableView.tableHeaderView = self?.featuredArticleView
+                    } else {
+                        self?.homeScreen.tableView.tableHeaderView = nil
+                    }
+                case .failure(let error):
+                    print("Error fetching featured article: \(error)")
+                    self?.homeScreen.tableView.tableHeaderView = nil
+                }
+            }
+        }
+        
+        // 2. Tải Danh Sách Phân Trang
+        fetchArticles()
     }
     
     private func fetchArticles() {
@@ -128,14 +179,43 @@ class HomeViewController: UIViewController {
     }
 }
 
+// MARK: - FeaturedArticleViewDelegate
+extension HomeViewController: FeaturedArticleViewDelegate {
+    func didTapFeaturedArticle(_ article: Article) {
+        let detailVC = ArticleDetailViewController(article: article)
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+}
+
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isSearching {
+            return searchResults.isEmpty ? 1 : searchResults.count
+        }
         return articles.isEmpty ? 1 : articles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if isSearching {
+            if searchResults.isEmpty {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
+                cell.textLabel?.text = "Không tìm thấy kết quả phù hợp."
+                cell.textLabel?.textAlignment = .center
+                cell.textLabel?.textColor = .gray
+                cell.backgroundColor = .clear
+                cell.selectionStyle = .none
+                return cell
+            }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ArticleCell.identifier, for: indexPath) as? ArticleCell else {
+                return UITableViewCell()
+            }
+            let article = searchResults[indexPath.row]
+            cell.configure(with: article)
+            return cell
+        }
+        
         if articles.isEmpty {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
             cell.textLabel?.text = "Đang tải dữ liệu hoặc không có tin tức..."
@@ -156,10 +236,18 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if !articles.isEmpty {
-            let selectedArticle = articles[indexPath.row]
-            let detailVC = ArticleDetailViewController(article: selectedArticle)
-            navigationController?.pushViewController(detailVC, animated: true)
+        if isSearching {
+            if !searchResults.isEmpty {
+                let selectedArticle = searchResults[indexPath.row]
+                let detailVC = ArticleDetailViewController(article: selectedArticle)
+                navigationController?.pushViewController(detailVC, animated: true)
+            }
+        } else {
+            if !articles.isEmpty {
+                let selectedArticle = articles[indexPath.row]
+                let detailVC = ArticleDetailViewController(article: selectedArticle)
+                navigationController?.pushViewController(detailVC, animated: true)
+            }
         }
     }
     
@@ -205,6 +293,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Nếu đang tìm kiếm thì block tap category
+        if searchController.isActive { return }
+        
         // Nếu chọn lại tab cũ thì bỏ qua
         guard selectedCategoryIndex != indexPath.row else { return }
         
@@ -214,6 +305,41 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         // Load lại danh sách bài theo category mới
         homeScreen.showLoading()
         resetPagination()
-        fetchArticles()
+        fetchContentForCurrentCategory()
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+extension HomeViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let query = searchController.searchBar.text, !query.isEmpty else {
+            searchResults.removeAll()
+            homeScreen.tableView.reloadData()
+            homeScreen.tableView.tableHeaderView = articles.isEmpty ? nil : featuredArticleView
+            return
+        }
+        
+        homeScreen.tableView.tableHeaderView = nil // Ẩn banner nổi bật khi tìm kiếm
+        
+        searchTimer?.invalidate()
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
+            self?.performSearch(query: query)
+        })
+    }
+    
+    private func performSearch(query: String) {
+        homeScreen.showLoading()
+        apiService.searchArticles(query: query) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.homeScreen.hideLoading()
+                switch result {
+                case .success(let results):
+                    self?.searchResults = results
+                    self?.homeScreen.tableView.reloadData()
+                case .failure(let error):
+                    print("Lỗi tìm kiếm: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }

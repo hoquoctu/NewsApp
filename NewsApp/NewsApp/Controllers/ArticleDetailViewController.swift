@@ -5,6 +5,11 @@ class ArticleDetailViewController: UIViewController {
     
     private let detailScreen = ArticleDetailScreen()
     private let article: Article
+    private var isBookmarked: Bool = false {
+        didSet {
+            updateBookmarkButtonIcon()
+        }
+    }
     
     init(article: Article) {
         self.article = article
@@ -22,7 +27,46 @@ class ArticleDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
+        setupBookmarkButton()
+        checkBookmarkState()
         configureWebView()
+    }
+    
+    private func setupBookmarkButton() {
+        let bookmarkButton = UIBarButtonItem(image: UIImage(systemName: "bookmark"), style: .plain, target: self, action: #selector(handleBookmarkTap))
+        navigationItem.rightBarButtonItem = bookmarkButton
+    }
+    
+    private func updateBookmarkButtonIcon() {
+        let iconName = isBookmarked ? "bookmark.fill" : "bookmark"
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: iconName)
+    }
+    
+    private func checkBookmarkState() {
+        guard let articleId = article.id else { return }
+        FirebaseAPIService.shared.checkIsBookmarked(articleId: articleId) { [weak self] isBookmarked in
+            DispatchQueue.main.async {
+                self?.isBookmarked = isBookmarked
+            }
+        }
+    }
+    
+    @objc private func handleBookmarkTap() {
+        // Optimistic UI update
+        isBookmarked.toggle()
+        
+        FirebaseAPIService.shared.toggleBookmark(article: article) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let isNowBookmarked):
+                    self?.isBookmarked = isNowBookmarked
+                case .failure(let error):
+                    // Revert UI on failure
+                    self?.isBookmarked.toggle()
+                    print("Error toggling bookmark: \(error.localizedDescription)")
+                }
+            }
+        }
     }
     
     // LUỒNG XUẤT TEXT & HÌNH ẢNH BÀI BÁO (WKWebView):
@@ -120,16 +164,16 @@ class ArticleDetailViewController: UIViewController {
             </style>
         </head>
         <body>
-            <img class="banner" src="\(article.thumbnailUrl)" />
+            <img class="banner" src="\(article.thumbnailUrl ?? "")" />
             <div class="header">
-                <div class="category">\(article.categoryName)</div>
+                <div class="category">\(article.categoryName ?? "Tin tức")</div>
                 <div class="title">\(article.title)</div>
-                <div class="meta">✍️ \(article.author) • ⏱ \(article.readingTime) phút đọc</div>
+                <div class="meta">✍️ \(article.author ?? "Ẩn danh") • ⏱ \(article.readingTime ?? 0) phút đọc</div>
             </div>
             <div class="content">
-                <p><strong>\(article.description)</strong></p>
+                <p><strong>\(article.description ?? "")</strong></p>
                 <!-- Tiêm đoạn HTML đã được sửa lỗi lười tải vào đây -->
-                \(processContentHTML(article.content))
+                \(processContentHTML(article.content ?? ""))
             </div>
         </body>
         </html>

@@ -29,6 +29,18 @@
 		0C99E6102FBA1509003471C4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0C99E60F2FBA1509003471C4 /* FirebaseAnalytics */; };
 		0C99E6122FBA1509003471C4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0C99E6112FBA1509003471C4 /* FirebaseFirestore */; };
 		0C99E6142FBA1509003471C4 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0C99E6132FBA1509003471C4 /* FirebaseFirestoreSwift */; };
+		0C99E6162FBAF586003471C4 /* FeaturedArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6152FBAF585003471C4 /* FeaturedArticleView.swift */; };
+		0C99E6182FBAFD3B003471C4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6172FBAFD3B003471C4 /* User.swift */; };
+		0C99E61A2FBAFDA3003471C4 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6192FBAFDA3003471C4 /* LoginScreen.swift */; };
+		0C99E61C2FBAFDBA003471C4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E61B2FBAFDBA003471C4 /* LoginViewController.swift */; };
+		0C99E61E2FBAFE05003471C4 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E61D2FBAFE04003471C4 /* RegisterViewController.swift */; };
+		0C99E6202FBAFE10003471C4 /* RegisterScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E61F2FBAFE10003471C4 /* RegisterScreen.swift */; };
+		0C99E6222FBAFE64003471C4 /* BookmarksScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6212FBAFE64003471C4 /* BookmarksScreen.swift */; };
+		0C99E6242FBAFE7B003471C4 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6232FBAFE7B003471C4 /* MainTabBarController.swift */; };
+		0C99E6262FBAFE83003471C4 /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6252FBAFE83003471C4 /* BookmarksViewController.swift */; };
+		0C99E6282FBAFEBD003471C4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6272FBAFEBD003471C4 /* ProfileViewController.swift */; };
+		0C99E62A2FBAFECC003471C4 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6292FBAFECB003471C4 /* ProfileScreen.swift */; };
+		0C99E62F2FBB86DA003471C4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0C99E62E2FBB86DA003471C4 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +81,18 @@
 		0C99E6062FBA108E003471C4 /* ArticleDetailScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleDetailScreen.swift; sourceTree = "<group>"; };
 		0C99E6082FBA109F003471C4 /* ArticleDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleDetailViewController.swift; sourceTree = "<group>"; };
 		0C99E60C2FBA11DD003471C4 /* UIImageView+AsyncLoad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+AsyncLoad.swift"; sourceTree = "<group>"; };
+		0C99E6152FBAF585003471C4 /* FeaturedArticleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedArticleView.swift; sourceTree = "<group>"; };
+		0C99E6172FBAFD3B003471C4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0C99E6192FBAFDA3003471C4 /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		0C99E61B2FBAFDBA003471C4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		0C99E61D2FBAFE04003471C4 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		0C99E61F2FBAFE10003471C4 /* RegisterScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterScreen.swift; sourceTree = "<group>"; };
+		0C99E6212FBAFE64003471C4 /* BookmarksScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarksScreen.swift; sourceTree = "<group>"; };
+		0C99E6232FBAFE7B003471C4 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		0C99E6252FBAFE83003471C4 /* BookmarksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
+		0C99E6272FBAFEBD003471C4 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		0C99E6292FBAFECB003471C4 /* ProfileScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
+		0C99E62C2FBB862E003471C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +103,7 @@
 				0C99E6102FBA1509003471C4 /* FirebaseAnalytics in Frameworks */,
 				0C99E6122FBA1509003471C4 /* FirebaseFirestore in Frameworks */,
 				0C99E6142FBA1509003471C4 /* FirebaseFirestoreSwift in Frameworks */,
+				0C99E62F2FBB86DA003471C4 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +131,7 @@
 				0C99E59E2FB9FC02003471C4 /* NewsAppTests */,
 				0C99E5A82FB9FC02003471C4 /* NewsAppUITests */,
 				0C99E58C2FB9FBFD003471C4 /* Products */,
+				0C99E62D2FBB86DA003471C4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +148,7 @@
 		0C99E58D2FB9FBFD003471C4 /* NewsApp */ = {
 			isa = PBXGroup;
 			children = (
+				0C99E62C2FBB862E003471C4 /* Info.plist */,
 				0C99E60B2FBA11DD003471C4 /* Extensions */,
 				0C99E6042FBA0B15003471C4 /* GoogleService-Info.plist */,
 				0C99E6012FBA0B03003471C4 /* Services */,
@@ -164,8 +191,13 @@
 		0C99E5F12FBA0ABE003471C4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0C99E61B2FBAFDBA003471C4 /* LoginViewController.swift */,
+				0C99E61D2FBAFE04003471C4 /* RegisterViewController.swift */,
+				0C99E6232FBAFE7B003471C4 /* MainTabBarController.swift */,
+				0C99E6272FBAFEBD003471C4 /* ProfileViewController.swift */,
 				0C99E6082FBA109F003471C4 /* ArticleDetailViewController.swift */,
 				0C99E5F22FBA0ABE003471C4 /* HomeViewController.swift */,
+				0C99E6252FBAFE83003471C4 /* BookmarksViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -173,6 +205,7 @@
 		0C99E5F42FBA0AD8003471C4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0C99E6152FBAF585003471C4 /* FeaturedArticleView.swift */,
 				0C99E5F52FBA0AD8003471C4 /* ArticleCell.swift */,
 				0C99E5F62FBA0AD8003471C4 /* CategoryCell.swift */,
 			);
@@ -182,6 +215,7 @@
 		0C99E5F92FBA0AEB003471C4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0C99E6172FBAFD3B003471C4 /* User.swift */,
 				0C99E5FA2FBA0AEB003471C4 /* Category.swift */,
 				0C99E5FB2FBA0AEB003471C4 /* Article.swift */,
 			);
@@ -191,6 +225,10 @@
 		0C99E5FE2FBA0AFC003471C4 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				0C99E6212FBAFE64003471C4 /* BookmarksScreen.swift */,
+				0C99E6192FBAFDA3003471C4 /* LoginScreen.swift */,
+				0C99E61F2FBAFE10003471C4 /* RegisterScreen.swift */,
+				0C99E6292FBAFECB003471C4 /* ProfileScreen.swift */,
 				0C99E6062FBA108E003471C4 /* ArticleDetailScreen.swift */,
 				0C99E5FF2FBA0AFC003471C4 /* HomeScreen.swift */,
 			);
@@ -213,6 +251,13 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		0C99E62D2FBB86DA003471C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -233,6 +278,7 @@
 				0C99E60F2FBA1509003471C4 /* FirebaseAnalytics */,
 				0C99E6112FBA1509003471C4 /* FirebaseFirestore */,
 				0C99E6132FBA1509003471C4 /* FirebaseFirestoreSwift */,
+				0C99E62E2FBB86DA003471C4 /* FirebaseAuth */,
 			);
 			productName = NewsApp;
 			productReference = 0C99E58B2FB9FBFD003471C4 /* NewsApp.app */;
@@ -352,8 +398,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C99E6262FBAFE83003471C4 /* BookmarksViewController.swift in Sources */,
+				0C99E6182FBAFD3B003471C4 /* User.swift in Sources */,
 				0C99E5EC2FBA083F003471C4 /* NewsApp.swift in Sources */,
 				0C99E5FC2FBA0AEB003471C4 /* Category.swift in Sources */,
+				0C99E6222FBAFE64003471C4 /* BookmarksScreen.swift in Sources */,
+				0C99E61C2FBAFDBA003471C4 /* LoginViewController.swift in Sources */,
+				0C99E6202FBAFE10003471C4 /* RegisterScreen.swift in Sources */,
 				0C99E6072FBA108E003471C4 /* ArticleDetailScreen.swift in Sources */,
 				0C99E6002FBA0AFC003471C4 /* HomeScreen.swift in Sources */,
 				0C99E6092FBA109F003471C4 /* ArticleDetailViewController.swift in Sources */,
@@ -361,8 +412,14 @@
 				0C99E5F32FBA0ABE003471C4 /* HomeViewController.swift in Sources */,
 				0C99E60D2FBA11DD003471C4 /* UIImageView+AsyncLoad.swift in Sources */,
 				0C99E5F72FBA0AD8003471C4 /* ArticleCell.swift in Sources */,
+				0C99E6242FBAFE7B003471C4 /* MainTabBarController.swift in Sources */,
+				0C99E62A2FBAFECC003471C4 /* ProfileScreen.swift in Sources */,
+				0C99E61E2FBAFE05003471C4 /* RegisterViewController.swift in Sources */,
 				0C99E5F82FBA0AD8003471C4 /* CategoryCell.swift in Sources */,
+				0C99E61A2FBAFDA3003471C4 /* LoginScreen.swift in Sources */,
+				0C99E6282FBAFEBD003471C4 /* ProfileViewController.swift in Sources */,
 				0C99E6032FBA0B03003471C4 /* FirebaseAPIService.swift in Sources */,
+				0C99E6162FBAF586003471C4 /* FeaturedArticleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,6 +582,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NewsApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NewsApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -535,7 +593,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tdc.edu.vn.NewsApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.newsapp.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -553,6 +611,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"NewsApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NewsApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -563,7 +622,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tdc.edu.vn.NewsApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.newsapp.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -710,6 +769,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0C99E60E2FBA1509003471C4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		0C99E62E2FBB86DA003471C4 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C99E60E2FBA1509003471C4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -1,5 +1,6 @@
 import SwiftUI
 import FirebaseCore
+import FirebaseAuth
 
 @main
 struct NewsAppApp: App {
@@ -9,22 +10,24 @@ struct NewsAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeViewWrapper()
+            RootViewWrapper()
                 .ignoresSafeArea()
         }
     }
 }
 
 // Bridging UIKit to SwiftUI
-struct HomeViewWrapper: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UINavigationController {
-        let homeVC = HomeViewController()
-        // Wrap in NavigationController for standard iOS navigation feel
-        let navController = UINavigationController(rootViewController: homeVC)
-        return navController
+struct RootViewWrapper: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        if Auth.auth().currentUser != nil {
+            return MainTabBarController()
+        } else {
+            let loginVC = LoginViewController()
+            return UINavigationController(rootViewController: loginVC)
+        }
     }
     
-    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         // No updates needed
     }
 }

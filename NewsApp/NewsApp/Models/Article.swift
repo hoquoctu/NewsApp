@@ -2,22 +2,22 @@ import Foundation
 
 struct Article: Codable, Identifiable {
     var id: String?
-    let author: String
-    let bookmarkCount: Int64
-    let categoryId: String
-    let categoryName: String
-    let content: String
-    let createdAt: Date
-    let description: String
-    let imageUrls: [String]
-    let isFeatured: Bool
-    let isTrending: Bool
+    let author: String?
+    let bookmarkCount: Int64?
+    let categoryId: String?
+    let categoryName: String?
+    let content: String?
+    let createdAt: Date?
+    let description: String?
+    let imageUrls: [String]?
+    let isFeatured: Bool?
+    let isTrending: Bool?
     let publishedAt: Date?
-    let readingTime: Int64
-    let sourceUrl: String
-    let thumbnailUrl: String
+    let readingTime: Int64?
+    let sourceUrl: String?
+    let thumbnailUrl: String?
     let title: String
-    let viewCount: Int64
+    let viewCount: Int64?
     
     enum CodingKeys: String, CodingKey {
         case id // optional, might be mapped manually from document ID
