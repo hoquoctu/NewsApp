@@ -2,11 +2,13 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
+import FirebaseFunctions
 
 class FirebaseAPIService {
     static let shared = FirebaseAPIService()
     
     private let db = Firestore.firestore()
+    private let functions = Functions.functions()
     
     private init() {}
     
@@ -121,32 +123,48 @@ class FirebaseAPIService {
         let docRef = db.collection("users").document(userId).collection("note_articles").document(articleId)
         
         docRef.getDocument { [weak self] document, error in
+            guard let self = self else { return }
             if let error = error {
                 completion(.failure(error))
                 return
             }
             
+            let data: [String: Any] = [
+                "userId": userId,
+                "articleId": articleId
+            ]
+            
             if let document = document, document.exists {
-                // Đã lưu -> Xoá
-                docRef.delete { error in
-                    if let error = error {
-                        completion(.failure(error))
-                    } else {
+                // Đã lưu -> Xoá qua Cloud Function
+                self.functions.httpsCallable("deleteArticle").call(data) { result, funcError in
+                    if let funcError = funcError {
+                        completion(.failure(funcError))
+                        return
+                    }
+                    
+                    if let res = result?.data as? [String: Any],
+                       let success = res["success"] as? Bool, success == true {
                         completion(.success(false)) // false means "unbookmarked"
+                    } else {
+                        let unknownError = NSError(domain: "FunctionError", code: 500, userInfo: [NSLocalizedDescriptionKey: "Xóa bài viết thất bại từ phía Cloud Function"])
+                        completion(.failure(unknownError))
                     }
                 }
             } else {
-                // Chưa lưu -> Thêm vào
-                do {
-                    try docRef.setData(from: article) { error in
-                        if let error = error {
-                            completion(.failure(error))
-                        } else {
-                            completion(.success(true)) // true means "bookmarked"
-                        }
+                // Chưa lưu -> Thêm vào qua Cloud Function
+                self.functions.httpsCallable("saveArticle").call(data) { result, funcError in
+                    if let funcError = funcError {
+                        completion(.failure(funcError))
+                        return
                     }
-                } catch {
-                    completion(.failure(error))
+                    
+                    if let res = result?.data as? [String: Any],
+                       let success = res["success"] as? Bool, success == true {
+                        completion(.success(true)) // true means "bookmarked"
+                    } else {
+                        let unknownError = NSError(domain: "FunctionError", code: 500, userInfo: [NSLocalizedDescriptionKey: "Lưu bài viết thất bại từ phía Cloud Function"])
+                        completion(.failure(unknownError))
+                    }
                 }
             }
         }

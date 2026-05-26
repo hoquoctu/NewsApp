@@ -41,6 +41,7 @@
 		0C99E6282FBAFEBD003471C4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6272FBAFEBD003471C4 /* ProfileViewController.swift */; };
 		0C99E62A2FBAFECC003471C4 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C99E6292FBAFECB003471C4 /* ProfileScreen.swift */; };
 		0C99E62F2FBB86DA003471C4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0C99E62E2FBB86DA003471C4 /* FirebaseAuth */; };
+		0C99E63B2FBB86DA003471C4 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 0C99E63A2FBB86DA003471C4 /* FirebaseFunctions */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 				0C99E6122FBA1509003471C4 /* FirebaseFirestore in Frameworks */,
 				0C99E6142FBA1509003471C4 /* FirebaseFirestoreSwift in Frameworks */,
 				0C99E62F2FBB86DA003471C4 /* FirebaseAuth in Frameworks */,
+				0C99E63B2FBB86DA003471C4 /* FirebaseFunctions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +281,7 @@
 				0C99E6112FBA1509003471C4 /* FirebaseFirestore */,
 				0C99E6132FBA1509003471C4 /* FirebaseFirestoreSwift */,
 				0C99E62E2FBB86DA003471C4 /* FirebaseAuth */,
+				0C99E63A2FBB86DA003471C4 /* FirebaseFunctions */,
 			);
 			productName = NewsApp;
 			productReference = 0C99E58B2FB9FBFD003471C4 /* NewsApp.app */;
@@ -774,6 +777,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0C99E60E2FBA1509003471C4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		0C99E63A2FBB86DA003471C4 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C99E60E2FBA1509003471C4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
