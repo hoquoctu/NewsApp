@@ -64,6 +64,16 @@ class LoginScreen: UIView {
         return btn
     }()
     
+    let forgotPasswordButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Quên mật khẩu?", for: .normal)
+        btn.setTitleColor(.systemBlue, for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
+        btn.contentHorizontalAlignment = .right
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -84,6 +94,7 @@ class LoginScreen: UIView {
         addSubview(passwordTextField)
         addSubview(loginButton)
         addSubview(registerButton)
+        addSubview(forgotPasswordButton)
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 60),
@@ -104,7 +115,11 @@ class LoginScreen: UIView {
             passwordTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 40),
+            forgotPasswordButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 8),
+            forgotPasswordButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            forgotPasswordButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            loginButton.topAnchor.constraint(equalTo: forgotPasswordButton.bottomAnchor, constant: 20),
             loginButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             loginButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
             loginButton.heightAnchor.constraint(equalToConstant: 50),

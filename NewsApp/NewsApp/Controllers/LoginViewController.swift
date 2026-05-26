@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
     private func setupActions() {
         loginScreen.loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         loginScreen.registerButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        loginScreen.forgotPasswordButton.addTarget(self, action: #selector(handleForgotPassword), for: .touchUpInside)
     }
     
     @objc private func handleLogin() {
@@ -50,6 +51,23 @@ class LoginViewController: UIViewController {
     @objc private func handleRegister() {
         let registerVC = RegisterViewController()
         navigationController?.pushViewController(registerVC, animated: true)
+    }
+    
+    @objc private func handleForgotPassword() {
+        guard let email = loginScreen.emailTextField.text, !email.isEmpty else {
+            showAlert(title: "Yêu cầu Email", message: "Vui lòng nhập địa chỉ email của bạn vào ô Email để nhận link khôi phục mật khẩu.")
+            return
+        }
+        
+        Auth.auth().sendPasswordReset(withEmail: email) { [weak self] error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self?.showAlert(title: "Lỗi", message: error.localizedDescription)
+                } else {
+                    self?.showAlert(title: "Thành công", message: "Một đường link khôi phục mật khẩu đã được gửi đến email của bạn. Vui lòng kiểm tra hộp thư (kể cả thư mục Spam) và làm theo hướng dẫn.")
+                }
+            }
+        }
     }
     
     private func showAlert(title: String, message: String) {
