@@ -2,11 +2,13 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
+import FirebaseFunctions
 
 class FirebaseAPIService {
     static let shared = FirebaseAPIService()
     
     private let db = Firestore.firestore()
+    private lazy var functions = Functions.functions()
     
     private init() {}
     
@@ -121,14 +123,20 @@ class FirebaseAPIService {
         let docRef = db.collection("users").document(userId).collection("note_articles").document(articleId)
         
         docRef.getDocument { [weak self] document, error in
+            guard let self = self else { return }
             if let error = error {
                 completion(.failure(error))
                 return
             }
             
+            let data: [String: Any] = [
+                "userId": userId,
+                "articleId": articleId
+            ]
+            
             if let document = document, document.exists {
-                // Đã lưu -> Xoá
-                docRef.delete { error in
+                // Đã lưu -> Gọi API deleteArticle qua Cloud Functions
+                self.functions.httpsCallable("deleteArticle").call(data) { result, error in
                     if let error = error {
                         completion(.failure(error))
                     } else {
@@ -136,17 +144,13 @@ class FirebaseAPIService {
                     }
                 }
             } else {
-                // Chưa lưu -> Thêm vào
-                do {
-                    try docRef.setData(from: article) { error in
-                        if let error = error {
-                            completion(.failure(error))
-                        } else {
-                            completion(.success(true)) // true means "bookmarked"
-                        }
+                // Chưa lưu -> Gọi API saveArticle qua Cloud Functions
+                self.functions.httpsCallable("saveArticle").call(data) { result, error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(true)) // true means "bookmarked"
                     }
-                } catch {
-                    completion(.failure(error))
                 }
             }
         }
